@@ -1,7 +1,8 @@
 /* Base typography and layout */
-html, body {
+*{
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 body {
   font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
@@ -59,3 +60,18 @@ code { background: #f6f8fa; padding: .15rem .3rem; border-radius: 4px; }
 
 /* Utility */
 .text-center { text-align: center; }
+
+/* Responsive grid */
+.grid { display: grid; gap: 1rem; }
+.grid-auto { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+/* Page header */
+.page-header { display:flex; justify-content:space-between; align-items:center; gap:.5rem; flex-wrap:wrap; }
+
+/* Badges and meta */
+.badge { display:inline-block; padding:.15rem .5rem; border-radius:999px; border:1px solid #bbb; font-size:.85rem; }
+.badge-success { color:#0a7a29; border-color:#a7d9b7; background:#eaf6ee; }
+.badge-muted { color:#555; background:#f3f4f6; }
+
+/* Actions group */
+.actions { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.6rem; }
