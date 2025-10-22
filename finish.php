@@ -91,13 +91,7 @@ if (is_post()) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Slutför – <?=h($quiz['title'])?></title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:1rem}
-    .container{max-width:640px;margin:0 auto}
-    input{width:100%;padding:.7rem;border:1px solid #bbb;border-radius:8px;margin:.4rem 0}
-    .err{color:#b00020;margin:.5rem 0}
-    .btn{display:inline-block;padding:.6rem .9rem;border:1px solid #777;border-radius:8px;text-decoration:none}
-  </style>
+  <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
 </head>
 <body>
   <div class="container">
@@ -116,4 +110,3 @@ if (is_post()) {
   </div>
 </body>
 </html>
-

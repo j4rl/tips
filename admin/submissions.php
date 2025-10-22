@@ -33,12 +33,7 @@ usort($subs, function($a,$b){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Resultat – <?=h($quiz['title'])?></title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:1.5rem}
-    table{border-collapse:collapse;width:100%;margin-top:1rem}
-    th,td{border-bottom:1px solid #ddd;padding:.5rem;text-align:left}
-    .small{color:#555}
-  </style>
+  <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
 </head>
 <body>
   <h1>Resultat – <?=h($quiz['title'])?></h1>
@@ -68,4 +63,3 @@ usort($subs, function($a,$b){
   <?php endif; ?>
 </body>
 </html>
-

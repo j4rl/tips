@@ -29,13 +29,7 @@ if (is_post()) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Logga in – Tipspromenad</title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:2rem;}
-    form{max-width:360px}
-    .err{color:#b00020;margin:.5rem 0}
-    input,button{font-size:1rem;padding:.6rem;width:100%;margin:.4rem 0}
-    a{color:#0366d6}
-  </style>
+  <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
   </head>
 <body>
   <h1>Logga in</h1>
@@ -52,4 +46,3 @@ if (is_post()) {
   <p>Ingen användare? <a href="<?=h(base_url('/admin/register.php'))?>">Registrera</a></p>
 </body>
 </html>
-

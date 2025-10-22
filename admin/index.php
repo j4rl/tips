@@ -15,15 +15,7 @@ $quizzes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mina tipspromenader</title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:1.5rem;}
-    header{display:flex;justify-content:space-between;align-items:center;}
-    table{border-collapse:collapse;width:100%;margin-top:1rem}
-    th,td{border-bottom:1px solid #ddd;padding:.5rem;text-align:left}
-    a.btn,button, .btn{display:inline-block;padding:.4rem .6rem;border:1px solid #999;border-radius:6px;text-decoration:none}
-    .small{font-size:.85rem;color:#555}
-    code{background:#f6f8fa;padding:.15rem .3rem;border-radius:4px}
-  </style>
+  <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
 </head>
 <body>
   <header>
@@ -60,4 +52,3 @@ $quizzes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   <?php endif; ?>
 </body>
 </html>
-

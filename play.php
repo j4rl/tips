@@ -89,17 +89,7 @@ $atTB = ($idx === $tbIndex);
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?=h($quiz['title'])?></title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:1rem}
-    .container{max-width:720px;margin:0 auto}
-    .qimg{max-width:100%;border-radius:8px;margin:.5rem 0}
-    .card{border:1px solid #ddd;border-radius:10px;padding:1rem;margin-top:1rem}
-    .opt{display:block;border:1px solid #bbb;border-radius:8px;padding:.7rem;margin:.5rem 0}
-    .nav{display:flex;justify-content:space-between;margin-top:1rem}
-    .btn{display:inline-block;padding:.6rem .9rem;border:1px solid #777;border-radius:8px;text-decoration:none}
-    .muted{color:#666}
-    input[type=number], input[type=text]{width:100%;padding:.7rem;border:1px solid #bbb;border-radius:8px}
-  </style>
+  <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
 </head>
 <body>
   <div class="container">
@@ -135,4 +125,3 @@ $atTB = ($idx === $tbIndex);
   </div>
 </body>
 </html>
-

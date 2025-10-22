@@ -8,7 +8,6 @@ $score = (int)($_GET['score'] ?? 0);
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
   <title>Tack för ditt svar</title>
   <style>
     body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:1rem;text-align:center}
@@ -16,10 +15,11 @@ $score = (int)($_GET['score'] ?? 0);
   </style>
 </head>
 <body>
-  <div class="card text-center">
+  <div class="card">
     <h2>Tack <?=h($name?:'!')?> 🎉</h2>
     <p>Ditt svar har registrerats.</p>
     <p>Poäng: <strong><?= (int)$score ?></strong></p>
   </div>
 </body>
 </html>
+

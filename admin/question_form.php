@@ -140,15 +140,7 @@ if (is_post()) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= $id? 'Redigera' : 'Ny' ?> fråga – <?=h($quiz['title'])?></title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:1.5rem;max-width:900px}
-    input[type=text],input[type=number], textarea{width:100%;padding:.6rem;margin:.3rem 0}
-    .err{color:#b00020;margin:.5rem 0}
-    fieldset{margin:1rem 0}
-    .row{display:flex;gap:1rem}
-    .row>div{flex:1}
-    label{display:block}
-  </style>
+  <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
 </head>
 <body>
   <h1><?= $id? 'Redigera' : 'Ny' ?> fråga</h1>
@@ -210,4 +202,3 @@ if (is_post()) {
   </script>
 </body>
 </html>
-

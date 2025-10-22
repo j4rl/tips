@@ -52,13 +52,7 @@ if (is_post()) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= $id? 'Redigera' : 'Ny' ?> tipspromenad</title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:1.5rem;max-width:800px}
-    input[type=text], textarea{width:100%;padding:.6rem;margin:.3rem 0}
-    .err{color:#b00020;margin:.5rem 0}
-    .row{display:flex;gap:1rem;align-items:center}
-    .row>*{flex:1}
-  </style>
+  <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
 </head>
 <body>
   <h1><?= $id? 'Redigera' : 'Ny' ?> tipspromenad</h1>
@@ -81,4 +75,3 @@ if (is_post()) {
   </form>
 </body>
 </html>
-

@@ -27,6 +27,7 @@ function options_for($qid){
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Utskrift – <?=h($quiz['title'])?></title>
+  <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
   <style>
     body{font-family:Georgia, Cambria, 'Times New Roman', serif; margin:1cm}
     h1{font-size:20pt;margin-bottom:.2cm}
@@ -58,4 +59,3 @@ function options_for($qid){
   <?php endforeach; ?>
 </body>
 </html>
-

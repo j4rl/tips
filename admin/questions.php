@@ -22,14 +22,7 @@ $questions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Frågor – <?=h($quiz['title'])?></title>
-  <style>
-    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:1.5rem;}
-    table{border-collapse:collapse;width:100%;margin-top:1rem}
-    th,td{border-bottom:1px solid #ddd;padding:.5rem;text-align:left;vertical-align:top}
-    a.btn{display:inline-block;padding:.35rem .6rem;border:1px solid #999;border-radius:6px;text-decoration:none}
-    .img{max-height:64px}
-    code{background:#f6f8fa;padding:.15rem .3rem;border-radius:4px}
-  </style>
+  <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
 </head>
 <body>
   <h1>Frågor – <?=h($quiz['title'])?></h1>
@@ -62,4 +55,3 @@ $questions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   <?php endif; ?>
 </body>
 </html>
-
