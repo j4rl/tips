@@ -32,9 +32,14 @@ function options_for($qid){
     body{font-family:Georgia, Cambria, 'Times New Roman', serif; margin:1cm}
     h1{font-size:20pt;margin-bottom:.2cm}
     .q{page-break-inside:avoid;margin:.6cm 0}
+    /* One question per page */
+    @media print {
+      .q { break-after: page; page-break-after: always; }
+      .q:last-child { break-after: auto; page-break-after: auto; }
+      .noprint{display:none}
+    }
     .img{max-width:100%;max-height:10cm;display:block;margin:.3cm 0}
     .opts{margin:.2cm 0 0 .5cm}
-    @media print { .noprint{display:none} }
   </style>
 </head>
 <body>

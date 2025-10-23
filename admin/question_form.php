@@ -18,13 +18,21 @@ if ($delete && $id) {
     $stmt = $mysqli->prepare('DELETE FROM questions WHERE id=? AND quiz_id=?');
     $stmt->bind_param('ii', $id, $quiz_id);
     $stmt->execute();
+    // Normalize q_order sequentially after deletion
+    $res = $mysqli->query('SELECT id FROM questions WHERE quiz_id='.(int)$quiz_id.' ORDER BY q_order, id');
+    $ord = 1;
+    while ($r = $res->fetch_assoc()) {
+        $qid = (int)$r['id'];
+        $mysqli->query('UPDATE questions SET q_order='.(int)$ord.' WHERE id='.(int)$qid.' AND quiz_id='.(int)$quiz_id);
+        $ord++;
+    }
     header('Location: ' . base_url('/admin/questions.php?quiz_id='.$quiz_id));
     exit;
 }
 
 $type = 'mcq';
 $text = '';
-$q_order = 1;
+$q_order = 1; // kept for display compatibility if needed, not editable
 $image_path = '';
 $correct_option = null;
 $tiebreaker_answer = '';
@@ -56,7 +64,7 @@ $error='';
 if (is_post()) {
     $type = ($_POST['type'] ?? 'mcq') === 'tiebreaker' ? 'tiebreaker' : 'mcq';
     $text = trim($_POST['text'] ?? '');
-    $q_order = (int)($_POST['q_order'] ?? 1);
+    // q_order is auto-managed; ignore any provided value
     $correct_option = null;
     $tiebreaker_answer = null;
     $opts = [
@@ -88,12 +96,18 @@ if (is_post()) {
     if (!$error) {
         // Spara/uppdatera fråga
         if ($id) {
-            $stmt = $mysqli->prepare('UPDATE questions SET q_order=?, text=?, type=?, correct_option=?, tiebreaker_answer=? WHERE id=? AND quiz_id=?');
-            $stmt->bind_param('issdiii', $q_order, $text, $type, $correct_option, $tiebreaker_answer, $id, $quiz_id);
+            $stmt = $mysqli->prepare('UPDATE questions SET text=?, type=?, correct_option=?, tiebreaker_answer=? WHERE id=? AND quiz_id=?');
+            $stmt->bind_param('ssiddi', $text, $type, $correct_option, $tiebreaker_answer, $id, $quiz_id);
             $ok = $stmt->execute();
         } else {
+            // Determine next order number for this quiz
+            $stmtMax = $mysqli->prepare('SELECT COALESCE(MAX(q_order),0)+1 AS next_ord FROM questions WHERE quiz_id=?');
+            $stmtMax->bind_param('i', $quiz_id);
+            $stmtMax->execute();
+            $next = ($stmtMax->get_result()->fetch_assoc()['next_ord'] ?? 1);
+
             $stmt = $mysqli->prepare('INSERT INTO questions(quiz_id,q_order,text,type,correct_option,tiebreaker_answer) VALUES(?,?,?,?,?,?)');
-            $stmt->bind_param('iissid', $quiz_id, $q_order, $text, $type, $correct_option, $tiebreaker_answer);
+            $stmt->bind_param('iissid', $quiz_id, $next, $text, $type, $correct_option, $tiebreaker_answer);
             $ok = $stmt->execute();
             if ($ok) $id = $stmt->insert_id;
         }
@@ -148,11 +162,6 @@ if (is_post()) {
   <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="quiz_id" value="<?= (int)$quiz_id ?>">
     <div class="row">
-      <div>
-        <label>Ordning
-          <input type="number" name="q_order" value="<?= (int)$q_order ?>" min="1" required>
-        </label>
-      </div>
       <div>
         <label>Typ</label>
         <label><input type="radio" name="type" value="mcq" <?= $type==='mcq'?'checked':'' ?>> Flervalsfråga</label>

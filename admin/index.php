@@ -42,7 +42,9 @@ $quizzes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
           <div class="actions">
             <a class="btn" href="<?=h(base_url('/admin/questions.php?quiz_id='.$q['id']))?>">Frågor</a>
             <a class="btn" href="<?=h(base_url('/admin/submissions.php?quiz_id='.$q['id']))?>">Resultat</a>
-            <a class="btn" href="<?=h(base_url('/admin/print.php?quiz_id='.$q['id']))?>">Utskrift</a>
+            <a class="btn" href="<?=h(base_url('/admin/print.php?quiz_id='.$q['id']))?>">Utskrift (frågor)</a>
+            <a class="btn" href="<?=h(base_url('/admin/print_qr.php?quiz_id='.$q['id']))?>">Utskrift (QR)</a>
+            <a class="btn" href="<?=h(base_url('/admin/print_results.php?quiz_id='.$q['id']))?>">Utskrift (resultat)</a>
             <a class="btn" href="<?=h(base_url('/admin/quiz_form.php?id='.$q['id']))?>">Redigera</a>
           </div>
         </article>

@@ -75,3 +75,14 @@ code { background: #f6f8fa; padding: .15rem .3rem; border-radius: 4px; }
 
 /* Actions group */
 .actions { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.6rem; }
+
+/* Drag and drop (questions) */
+.drag-handle {
+  display: inline-block;
+  padding: .1rem .35rem;
+  margin-left: .4rem;
+  cursor: grab;
+  user-select: none;
+  line-height: 1;
+}
+tr.over { outline: 2px dashed #9ca3af; }

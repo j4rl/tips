@@ -15,49 +15,48 @@ $quiz_id = (int)$quiz['id'];
 $rows = $mysqli->query('SELECT * FROM questions WHERE quiz_id='.(int)$quiz_id.' ORDER BY q_order')->fetch_all(MYSQLI_ASSOC);
 if (!$rows) { exit('Inga frågor ännu.'); }
 
-// session state per quiz
+// Session state per quiz
 $sessKey = 'play_'.$quiz_id;
 if (!isset($_SESSION[$sessKey])) {
     $_SESSION[$sessKey] = [
-        'idx' => 0, // aktuell fråga index
+        'idx' => 0,
         'answers' => [], // question_id => ['option_id'=>..] eller ['tb'=>value]
-        'reached_tb' => false
     ];
 }
 $state = &$_SESSION[$sessKey];
 
-// hitta tie-breaker index (sista frågan ska vara tiebreaker enligt krav)
-$tbIndex = null;
-foreach ($rows as $i=>$q) { if ($q['type']==='tiebreaker') $tbIndex = $i; }
-if ($tbIndex === null) $tbIndex = count($rows)-1; // fallback
+// Finns tiebreaker?
+$tbIndex = null; foreach ($rows as $i=>$qr) { if ($qr['type']==='tiebreaker') { $tbIndex = $i; break; } }
 
-// Hantera POST (svara på fråga)
+// POST: spara svar och navigera
 if (is_post()) {
     $qid = (int)($_POST['question_id'] ?? 0);
-    $qIndex = null; foreach ($rows as $i=>$q) { if ((int)$q['id']===$qid) { $qIndex=$i; break; } }
+    $qIndex = null; foreach ($rows as $i=>$qq) { if ((int)$qq['id']===$qid) { $qIndex=$i; break; } }
     if ($qIndex===null) { http_response_code(400); exit('Ogiltig fråga.'); }
-
-    // Tillåt svar bara på aktuell fråga eller tidigare (back), ej framtida
-    $maxAllowed = $state['idx'];
-    if ($state['reached_tb']) { $maxAllowed = max($state['idx'], $tbIndex); }
-    if ($qIndex > $maxAllowed) { header('Location: '.base_url('/play.php?code='.$code)); exit; }
-
     $question = $rows[$qIndex];
+
     if ($question['type']==='mcq') {
         $opt = (int)($_POST['option_id'] ?? 0);
         if ($opt>0) {
             $state['answers'][$qid] = ['option_id'=>$opt];
             if ($qIndex >= $state['idx']) { $state['idx'] = min($qIndex+1, count($rows)-1); }
-            if ($state['idx'] >= $tbIndex) { $state['reached_tb'] = true; }
         }
-        header('Location: '.base_url('/play.php?code='.$code));
+        if (($_POST['go'] ?? '') === 'finish') {
+            header('Location: '.base_url('/finish.php?code='.$code));
+        } else {
+            header('Location: '.base_url('/play.php?code='.$code.'&q='.(int)min($qIndex+1,count($rows)-1)));
+        }
         exit;
     } else { // tiebreaker
         $val = (string)($_POST['tiebreaker_value'] ?? '');
         if ($val !== '' && is_numeric($val)) {
             $state['answers'][$qid] = ['tb'=>(float)$val];
-            $state['idx'] = $tbIndex; $state['reached_tb'] = true;
-            header('Location: '.base_url('/finish.php?code='.$code));
+            $state['idx'] = max($state['idx'], $qIndex);
+            if (($_POST['go'] ?? '') === 'finish') {
+                header('Location: '.base_url('/finish.php?code='.$code));
+            } else {
+                header('Location: '.base_url('/play.php?code='.$code.'&q='.(int)min($qIndex+1,count($rows)-1)));
+            }
             exit;
         }
         header('Location: '.base_url('/play.php?code='.$code));
@@ -65,11 +64,10 @@ if (is_post()) {
     }
 }
 
-// Hantera navigering via ?q=index, men begränsa framåt och tillbaka på TB
+// GET-navigering via ?q=index
 $reqIndex = isset($_GET['q']) ? (int)$_GET['q'] : $state['idx'];
-if ($state['reached_tb']) { $reqIndex = max($reqIndex, $tbIndex); }
-$maxIndex = max(min($reqIndex, $state['idx']), 0);
-$state['idx'] = $maxIndex; // håll i synk
+$reqIndex = max(min($reqIndex, count($rows)-1), 0);
+$state['idx'] = $reqIndex;
 
 $idx = $state['idx'];
 $q = $rows[$idx];
@@ -81,7 +79,6 @@ if ($q['type']==='mcq') {
     while ($r = $res->fetch_assoc()) { $options[] = $r; }
 }
 
-$atTB = ($idx === $tbIndex);
 ?>
 <!doctype html>
 <html lang="sv">
@@ -100,28 +97,40 @@ $atTB = ($idx === $tbIndex);
     <form method="post" class="card">
       <input type="hidden" name="question_id" value="<?= (int)$q['id'] ?>">
       <?php if ($q['type']==='mcq'): ?>
+        <?php $sel = $state['answers'][(int)$q['id']]['option_id'] ?? null; ?>
         <?php foreach ($options as $op): ?>
         <label class="opt">
-          <input type="radio" name="option_id" value="<?= (int)$op['id'] ?>" required> <?=h($op['text'])?>
+          <input type="radio" name="option_id" value="<?= (int)$op['id'] ?>" <?= ($sel==(int)$op['id'])?'checked':'' ?> required> <?=h($op['text'])?>
         </label>
         <?php endforeach; ?>
         <div class="nav">
-          <?php if (!$atTB && $idx>0): ?>
+          <?php if ($idx>0): ?>
             <a class="btn" href="<?=h(base_url('/play.php?code='.$code.'&q='.($idx-1)))?>">Tillbaka</a>
           <?php else: ?><span></span><?php endif; ?>
-          <button class="btn" type="submit">Nästa</button>
+          <?php if ($idx < count($rows)-1): ?>
+            <button class="btn" type="submit" name="go" value="next">Nästa</button>
+          <?php else: ?>
+            <button class="btn" type="submit" name="go" value="finish">Skicka in</button>
+          <?php endif; ?>
         </div>
       <?php else: ?>
+        <?php $tbs = $state['answers'][(int)$q['id']]['tb'] ?? ''; ?>
         <label>Utslagsfråga – ange ett numeriskt svar
-          <input type="number" step="any" name="tiebreaker_value" required>
+          <input type="number" step="any" name="tiebreaker_value" value="<?=h((string)$tbs)?>" required>
         </label>
         <div class="nav">
-          <!-- När man kommer till utslagsfrågan kan man inte bläddra bakåt -->
-          <span></span>
-          <button class="btn" type="submit">Fortsätt</button>
+          <?php if ($idx>0): ?>
+            <a class="btn" href="<?=h(base_url('/play.php?code='.$code.'&q='.($idx-1)))?>">Tillbaka</a>
+          <?php else: ?><span></span><?php endif; ?>
+          <?php if ($idx < count($rows)-1): ?>
+            <button class="btn" type="submit" name="go" value="next">Nästa</button>
+          <?php else: ?>
+            <button class="btn" type="submit" name="go" value="finish">Skicka in</button>
+          <?php endif; ?>
         </div>
       <?php endif; ?>
     </form>
   </div>
 </body>
 </html>
+
