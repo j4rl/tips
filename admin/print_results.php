@@ -33,6 +33,10 @@ usort($subs, function($a,$b){
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Utskrift resultat – <?=h($quiz['title'])?></title>
   <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
+  <?php $prefs = get_user_settings((int)$user['id'], $mysqli); ?>
+  <style>
+    :root { <?php if (($prefs['theme_mode'] ?? 'system') === 'light'): ?>color-scheme: light;<?php elseif (($prefs['theme_mode'] ?? 'system') === 'dark'): ?>color-scheme: dark;<?php else: ?>color-scheme: light dark;<?php endif; ?> --accent: light-dark(<?=h($prefs['main_color_light'])?>, <?=h($prefs['main_color_dark'])?>); }
+  </style>
   <style>
     body{margin:1.2cm}
     h1{margin:0}

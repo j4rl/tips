@@ -53,8 +53,23 @@ if (is_post()) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= $id? 'Redigera' : 'Ny' ?> tipspromenad</title>
   <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
+  <?php $prefs = get_user_settings((int)$user['id'], $mysqli); ?>
+  <style>
+    :root {
+      <?php if (($prefs['theme_mode'] ?? 'system') === 'light'): ?>color-scheme: light;<?php elseif (($prefs['theme_mode'] ?? 'system') === 'dark'): ?>color-scheme: dark;<?php else: ?>color-scheme: light dark;<?php endif; ?>
+      --accent: light-dark(<?=h($prefs['main_color_light'])?>, <?=h($prefs['main_color_dark'])?>);
+    }
+  </style>
 </head>
 <body>
+  <header class="site-header">
+    <div class="spancol"><h1><?= $id? 'Redigera' : 'Ny' ?> tipspromenad</h1></div>
+    <div>
+      <a class="btn" href="<?=h(base_url('/admin/quiz_form.php'))?>">+ Ny tipspromenad</a>
+      <a class="btn" href="<?=h(base_url('/admin/logout.php'))?>">Logga ut</a>
+      <a class="btn" href="<?=h(base_url('/admin/profile.php'))?>"><?="✦ ".h($user['name'])?></a>
+    </div>
+  </header>
   <div class="spancol">
   <h1><?= $id? 'Redigera' : 'Ny' ?> tipspromenad</h1>
   <?php if ($id): ?>
@@ -77,8 +92,8 @@ if (is_post()) {
       </label>
       <label style="flex:0 0 auto"><input type="checkbox" name="is_active" <?= $is_active? 'checked':'' ?>> Aktiv</label>
     </div>
-    <button type="submit">Spara</button>
-    <a href="<?=h(base_url('/admin/index.php'))?>" class="back">Tillbaka</a>
+    <button type="submit" class="btn-accent">Spara</button>
+    <a href="<?=h(base_url('/admin/index.php'))?>" class="btn">Tillbaka</a>
   </form>
 
 </body>

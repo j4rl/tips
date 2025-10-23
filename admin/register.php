@@ -51,7 +51,7 @@ if (is_post()) {
     <label>Upprepa lösenord
       <input type="password" name="password2" minlength="6" required>
     </label>
-    <button type="submit">Skapa konto</button>
+    <button type="submit" class="btn-accent">Skapa konto</button>
   </form>
   <p>Har du konto? <a href="<?=h(base_url('/admin/login.php'))?>">Logga in</a></p>
 </body>

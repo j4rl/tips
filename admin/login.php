@@ -41,7 +41,7 @@ if (is_post()) {
     <label>Lösenord
       <input type="password" name="password" required>
     </label>
-    <button type="submit">Logga in</button>
+    <button type="submit" class="btn-accent">Logga in</button>
   </form>
   <p>Ingen användare? <a href="<?=h(base_url('/admin/register.php'))?>">Registrera</a></p>
 </body>

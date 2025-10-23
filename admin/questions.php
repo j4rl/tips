@@ -31,8 +31,20 @@ if (isset($_GET['add_bank_id'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Frågor – <?=h($quiz['title'])?></title>
   <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
+  <?php $prefs = get_user_settings((int)$user['id'], $mysqli); ?>
+  <style>
+    :root { <?php if (($prefs['theme_mode'] ?? 'system') === 'light'): ?>color-scheme: light;<?php elseif (($prefs['theme_mode'] ?? 'system') === 'dark'): ?>color-scheme: dark;<?php else: ?>color-scheme: light dark;<?php endif; ?> --accent: light-dark(<?=h($prefs['main_color_light'])?>, <?=h($prefs['main_color_dark'])?>); }
+  </style>
 </head>
 <body>
+  <header class="site-header">
+    <div><h1 style="margin:0">Frågor</h1></div>
+    <div>
+      <a class="btn btn-accent" href="<?=h(base_url('/admin/quiz_form.php'))?>">+ Ny tipspromenad</a>
+      <a class="btn" href="<?=h(base_url('/admin/logout.php'))?>">Logga ut</a>
+      <a class="btn" href="<?=h(base_url('/admin/profile.php'))?>"><?="✦ ".h($user['name'])?></a>
+    </div>
+  </header>
   <h1>Frågor – <?=h($quiz['title'])?></h1>
   <p>
      <a class="btn" href="<?=h(base_url('/admin/quiz_form.php?id='.$quiz['id']))?>">Redigera tipspromenad</a>

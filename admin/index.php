@@ -16,13 +16,29 @@ $quizzes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mina tipspromenader</title>
   <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
+  <?php $prefs = get_user_settings((int)$user['id'], $mysqli); ?>
+  <style>
+    :root {
+      <?php if (($prefs['theme_mode'] ?? 'system') === 'light'): ?>
+      color-scheme: light;
+      <?php elseif (($prefs['theme_mode'] ?? 'system') === 'dark'): ?>
+      color-scheme: dark;
+      <?php else: ?>
+      color-scheme: light dark;
+      <?php endif; ?>
+      --accent: light-dark(<?=h($prefs['main_color_light'])?>, <?=h($prefs['main_color_dark'])?>);
+    }
+  </style>
 </head>
 <body>
-  <header class="page-header">
-    <h1>Mina tipspromenader</h1>
-    <div>
-      <a class="btn" href="<?=h(base_url('/admin/quiz_form.php'))?>">+ Ny tipspromenad</a>
+  <header class="site-header">
+    <div style="display:flex;align-items:center;gap:.6rem;">
+      <h1 style="margin:0">Mina tipspromenader</h1>
+    </div>
+    <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;">
+      <a class="btn btn-accent" href="<?=h(base_url('/admin/quiz_form.php'))?>">+ Ny tipspromenad</a>
       <a class="btn" href="<?=h(base_url('/admin/logout.php'))?>">Logga ut</a>
+      <a class="btn" href="<?=h(base_url('/admin/profile.php'))?>"><?="✦ ".h($user['name'])?></a>
     </div>
   </header>
 

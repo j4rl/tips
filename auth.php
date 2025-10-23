@@ -111,3 +111,34 @@ function add_bank_question_to_quiz(int $bank_qid, int $quiz_id, mysqli $db): boo
     return true;
 }
 
+// User appearance settings (theme + accent)
+function ensure_user_settings_schema(mysqli $db): void {
+    $db->query("CREATE TABLE IF NOT EXISTS user_settings (
+        user_id INT UNSIGNED NOT NULL PRIMARY KEY,
+        theme_mode ENUM('system','light','dark') NOT NULL DEFAULT 'system',
+        main_color_light VARCHAR(7) DEFAULT '#0d6efd',
+        main_color_dark VARCHAR(7) DEFAULT '#0d6efd',
+        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+}
+
+function get_user_settings(int $user_id, mysqli $db): array {
+    ensure_user_settings_schema($db);
+    $res = $db->query('SELECT theme_mode, main_color_light, main_color_dark FROM user_settings WHERE user_id='.(int)$user_id.' LIMIT 1');
+    if ($row = $res->fetch_assoc()) {
+        return [
+            'theme_mode' => $row['theme_mode'] ?: 'system',
+            'main_color_light' => $row['main_color_light'] ?: '#0d6efd',
+            'main_color_dark' => $row['main_color_dark'] ?: '#0d6efd',
+        ];
+    }
+    return [ 'theme_mode' => 'system', 'main_color_light' => '#0d6efd', 'main_color_dark' => '#0d6efd' ];
+}
+
+function save_user_settings(int $user_id, string $theme_mode, string $light, string $dark, mysqli $db): bool {
+    ensure_user_settings_schema($db);
+    $theme_mode = in_array($theme_mode, ['system','light','dark'], true) ? $theme_mode : 'system';
+    $stmt = $db->prepare('INSERT INTO user_settings(user_id,theme_mode,main_color_light,main_color_dark) VALUES(?,?,?,?) ON DUPLICATE KEY UPDATE theme_mode=VALUES(theme_mode), main_color_light=VALUES(main_color_light), main_color_dark=VALUES(main_color_dark)');
+    $stmt->bind_param('isss', $user_id, $theme_mode, $light, $dark);
+    return $stmt->execute();
+}
