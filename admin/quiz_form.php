@@ -55,7 +55,14 @@ if (is_post()) {
   <link rel="stylesheet" href="<?=h(base_url('/assets/style.css'))?>">
 </head>
 <body>
+  <div class="spancol">
   <h1><?= $id? 'Redigera' : 'Ny' ?> tipspromenad</h1>
+  <?php if ($id): ?>
+  <form method="get" action="<?=h(base_url('/admin/quiz_delete.php'))?>" onsubmit="return confirm('Radera tipspromenaden? Du kan välja att spara frågorna i din frågebank på nästa steg.');">
+    <input type="hidden" name="id" value="<?= (int)$id ?>">
+    <button type="submit" class="btn error" >Radera tipspromenad…</button>
+  </form>
+  <?php endif; ?></div>
   <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
   <form method="post">
     <label>Titel
@@ -71,7 +78,8 @@ if (is_post()) {
       <label style="flex:0 0 auto"><input type="checkbox" name="is_active" <?= $is_active? 'checked':'' ?>> Aktiv</label>
     </div>
     <button type="submit">Spara</button>
-    <a href="<?=h(base_url('/admin/index.php'))?>" class="btn">Tillbaka</a>
+    <a href="<?=h(base_url('/admin/index.php'))?>" class="back">Tillbaka</a>
   </form>
+
 </body>
 </html>

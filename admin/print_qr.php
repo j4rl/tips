@@ -40,7 +40,7 @@ $playUrl = $baseHost . base_url('/play.php') . '?code=' . $quiz['join_code'];
 </head>
 <body>
   <div class="noprint">
-    <a href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz['id']))?>">Tillbaka</a>
+    <a href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz['id']))?>" class="back">Tillbaka</a>
     <button onclick="window.print()">Skriv ut</button>
   </div>
   <div class="wrap">

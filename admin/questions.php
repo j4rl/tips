@@ -15,6 +15,14 @@ $stmt = $mysqli->prepare('SELECT * FROM questions WHERE quiz_id=? ORDER BY q_ord
 $stmt->bind_param('i', $quiz_id);
 $stmt->execute();
 $questions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+// Handle add from bank
+if (isset($_GET['add_bank_id'])) {
+  $bank_id = (int)$_GET['add_bank_id'];
+  if ($bank_id) { add_bank_question_to_quiz($bank_id, (int)$quiz['id'], $mysqli); }
+  header('Location: ' . base_url('/admin/questions.php?quiz_id='.$quiz['id']));
+  exit;
+}
 ?>
 <!doctype html>
 <html lang="sv">
@@ -26,8 +34,10 @@ $questions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 </head>
 <body>
   <h1>Frågor – <?=h($quiz['title'])?></h1>
-  <p><a class="btn" href="<?=h(base_url('/admin/quiz_form.php?id='.$quiz['id']))?>">Redigera tipspromenad</a>
-     <a class="btn" href="<?=h(base_url('/admin/question_form.php?quiz_id='.$quiz['id']))?>">+ Lägg till fråga</a>
+  <p>
+     <a class="btn" href="<?=h(base_url('/admin/quiz_form.php?id='.$quiz['id']))?>">Redigera tipspromenad</a>
+     <a class="btn" href="<?=h(base_url('/admin/question_form.php?quiz_id='.$quiz['id']))?>">+ Lägg till ny fråga</a>
+     <a class="btn" href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz['id'].'&bank=1'))?>">Mina frågor</a>
      <a class="btn" href="<?=h(base_url('/admin/submissions.php?quiz_id='.$quiz['id']))?>">Resultat</a>
      <a class="btn" href="<?=h(base_url('/admin/print.php?quiz_id='.$quiz['id']))?>">Utskrift (frågor)</a>
      <a class="btn" href="<?=h(base_url('/admin/print_qr.php?quiz_id='.$quiz['id']))?>">Utskrift (QR)</a>
@@ -35,7 +45,25 @@ $questions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   </p>
   <p>Startlänk: <code><?=h((isset($_SERVER['HTTP_HOST'])?('http'.(!empty($_SERVER['HTTPS'])?'s':'').'://'.$_SERVER['HTTP_HOST']):'').base_url('/play.php').'?code='.h($quiz['join_code']))?></code></p>
 
-  <?php if (!$questions): ?>
+  <?php if (isset($_GET['bank'])): ?>
+    <?php ensure_question_bank_schema($mysqli); $bank = $mysqli->query('SELECT * FROM bank_questions WHERE user_id='.(int)$user['id'].' ORDER BY created_at DESC'); ?>
+    <h2>Mina frågor</h2>
+    <?php if ($bank && $bank->num_rows>0): ?>
+      <div class="list">
+      <?php while ($bq = $bank->fetch_assoc()): ?>
+        <div class="list-item">
+          <div class="list-col type"><?= $bq['type']==='mcq'?'Flervalsfråga':'Utslagsfråga' ?></div>
+          <div class="list-col text"><?= nl2br(h($bq['text'])) ?></div>
+          <div class="list-col actions">
+            <a class="btn" href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz['id'].'&add_bank_id='.(int)$bq['id']))?>">Lägg till i denna tipspromenad</a>
+          </div>
+        </div>
+      <?php endwhile; ?>
+      </div>
+    <?php else: ?>
+      <p>Inga frågor i din frågebank ännu.</p>
+    <?php endif; ?>
+  <?php elseif (!$questions): ?>
     <p>Inga frågor ännu. Lägg till minst en, och avsluta med en utslagsfråga.</p>
   <?php else: ?>
   <div class="list-head">
@@ -56,6 +84,15 @@ $questions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     <?php endforeach; ?>
   </div>
   <div id="saveMsg" class="small" style="margin-top:.5rem;color:#555;"></div>
+  <script>
+  // Add-from-bank handler (via GET param)
+  (function(){
+    var m = location.search.match(/add_bank_id=(\d+)/);
+    if (!m) return;
+    // Basic feedback
+    var msg = document.getElementById('saveMsg'); if (msg) msg.textContent = 'Fråga tillagd från frågebank.';
+  })();
+  </script>
   <script>
   (function(){
     var list = document.getElementById('qlist');
@@ -104,4 +141,3 @@ $questions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   <?php endif; ?>
 </body>
 </html>
-

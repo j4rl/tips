@@ -161,6 +161,7 @@ if (is_post()) {
   <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
   <form method="post" enctype="multipart/form-data">
     <input type="hidden" name="quiz_id" value="<?= (int)$quiz_id ?>">
+    <p><a class="btn" href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz_id.'&bank=1'))?>">Lägg till från frågebank</a></p>
     <div class="row">
       <div>
         <label>Typ</label>

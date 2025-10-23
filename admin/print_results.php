@@ -48,7 +48,7 @@ usort($subs, function($a,$b){
 </head>
 <body>
   <div class="noprint">
-    <a href="<?=h(base_url('/admin/submissions.php?quiz_id='.$quiz['id']))?>">Tillbaka</a>
+    <a href="<?=h(base_url('/admin/submissions.php?quiz_id='.$quiz['id']))?>" class="back">Tillbaka</a>
     <button onclick="window.print()">Skriv ut</button>
   </div>
   <h1>Resultat – <?=h($quiz['title'])?></h1>
