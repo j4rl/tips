@@ -60,14 +60,21 @@ if (isset($_GET['add_bank_id'])) {
   <?php if (isset($_GET['bank'])): ?>
     <?php ensure_question_bank_schema($mysqli); $bank = $mysqli->query('SELECT * FROM bank_questions WHERE user_id='.(int)$user['id'].' ORDER BY created_at DESC'); ?>
     <h2>Mina frågor</h2>
+    <p><a class="btn btn-accent" href="<?=h(base_url('/admin/bank_question_form.php'))?>">+ Ny bankfråga</a></p>
     <?php if ($bank && $bank->num_rows>0): ?>
+      <div class="list-head">
+        <div>Typ</div><div>Fråga</div><div>Bild</div><div>Tillhör</div><div>Åtgärder</div>
+      </div>
       <div class="list">
       <?php while ($bq = $bank->fetch_assoc()): ?>
         <div class="list-item">
           <div class="list-col type"><?= $bq['type']==='mcq'?'Flervalsfråga':'Utslagsfråga' ?></div>
           <div class="list-col text"><?= nl2br(h($bq['text'])) ?></div>
+          <div class="list-col img"><?= $bq['image_path'] ? ('<img class="img" src="'.h(base_url('/'.ltrim($bq['image_path'],'/'))).'">') : '' ?></div>
+          <div class="list-col small">– ej kopplad</div>
           <div class="list-col actions">
-            <a class="btn" href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz['id'].'&add_bank_id='.(int)$bq['id']))?>">Lägg till i denna tipspromenad</a>
+            <a class="btn" href="<?=h(base_url('/admin/bank_question_form.php?id='.(int)$bq['id']))?>">Redigera</a>
+            <a class="btn" href="<?=h(base_url('/admin/bank_delete.php?id='.(int)$bq['id']))?>" onclick="return confirm('Radera bankfrågan?');">Radera</a>
           </div>
         </div>
       <?php endwhile; ?>

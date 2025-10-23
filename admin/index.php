@@ -32,10 +32,10 @@ $quizzes = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 </head>
 <body>
   <header class="site-header">
-    <div style="display:flex;align-items:center;gap:.6rem;">
+    <div>
       <h1 style="margin:0">Mina tipspromenader</h1>
     </div>
-    <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;">
+    <div>
       <a class="btn btn-accent" href="<?=h(base_url('/admin/quiz_form.php'))?>">+ Ny tipspromenad</a>
       <a class="btn" href="<?=h(base_url('/admin/logout.php'))?>">Logga ut</a>
       <a class="btn" href="<?=h(base_url('/admin/profile.php'))?>"><?="✦ ".h($user['name'])?></a>
