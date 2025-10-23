@@ -59,11 +59,19 @@ body {
 .success{ color: var(--color-success) !important; background: var(--color-success-bg) !important; }
 .spancol{
   display:flex;
+  flex-wrap: nowrap;
   width:100%;
   gap:1rem;
 }
 .spancol h1{
   flex-grow:5;
+}
+.spancol label{
+  width: 100%;
+  flex-grow:1;
+}
+.spancol label *{
+  width:100%;
 }
 
 /* Images */
@@ -177,8 +185,8 @@ tr.over { outline: 2px dashed var(--color-outline); }
 
 /* List-based layouts (no tables) */
 .list { display: grid; gap: .6rem; margin-top: 1rem; }
-.list-head { display: grid; gap: .5rem; grid-template-columns: 72px 140px 1fr 1fr 12rem; font-weight: 600; color: var(--color-listhead-text); }
-.list-item { display: grid; gap: .5rem; grid-template-columns: 72px 140px 1fr 1fr 12rem; align-items: start; padding: .6rem; border: 1px solid var(--color-list-border); border-radius: 8px; background: var(--color-white); }
+.list-head { display: grid; gap: .5rem; grid-template-columns: 72px 140px 1fr 1fr 14rem; font-weight: 600; color: var(--color-listhead-text); }
+.list-item { display: grid; gap: .5rem; grid-template-columns: 72px 140px 1fr 1fr 14rem; align-items: start; padding: .6rem; border: 1px solid var(--color-list-border); border-radius: 8px; background: var(--color-white); }
 .list-item.over { outline: 2px dashed var(--color-outline); }
 .list-col { overflow: hidden; }
 .list-col.actions { display:flex; flex-wrap:wrap; gap:.4rem; justify-content: right;}

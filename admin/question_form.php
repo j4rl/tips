@@ -193,7 +193,7 @@ if (is_post()) {
     <fieldset id="mcq" <?= $type==='mcq'? '' : 'style="display:none"' ?>>
       <legend>Flervalsalternativ (2–4)</legend>
       <?php for ($i=1;$i<=4;$i++): ?>
-        <div>
+        <div class="spancol">
           <label>Alternativ <?= $i ?>
             <input type="text" name="opt<?= $i ?>" value="<?=h($opts[$i-1] ?? '')?>">
           </label>
