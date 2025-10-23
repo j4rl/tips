@@ -37,6 +37,9 @@ function options_for($qid){
       .q { break-after: page; page-break-after: always; }
       .q:last-child { break-after: auto; page-break-after: auto; }
       .noprint{display:none}
+      body { margin: 1.2cm; font-family: Georgia, Cambria, 'Times New Roman', serif; }
+      a { text-decoration: none; color: #000; }
+      .img { max-width: 100%; height: auto; }
     }
     .img{max-width:100%;max-height:10cm;display:block;margin:.3cm 0}
     .opts{margin:.2cm 0 0 .5cm}

@@ -36,7 +36,14 @@ usort($subs, function($a,$b){
   <style>
     body{margin:1.2cm}
     h1{margin:0}
-    @media print{ .noprint{display:none} }
+    .plist{ margin-top: .8rem; }
+    .plist li{ margin:.45rem 0; page-break-inside: avoid; }
+    .meta{ color:#555; font-size: .95rem; }
+    @media print{
+      .noprint{display:none}
+      body{margin:1.2cm}
+      a{ color:#000; text-decoration:none }
+    }
   </style>
 </head>
 <body>
@@ -48,20 +55,18 @@ usort($subs, function($a,$b){
   <?php if (!$subs): ?>
     <p>Inga inlämningar ännu.</p>
   <?php else: ?>
-    <table>
-      <tr><th>Plac.</th><th>Namn</th><th>Poäng</th><th>Utslagssvar</th><th>Diff</th><th>Tid</th></tr>
-      <?php $i=1; foreach ($subs as $s): ?>
-        <tr>
-          <td><?= $i++ ?></td>
-          <td><?= h($s['participant_name']) ?></td>
-          <td><?= (int)$s['score'] ?></td>
-          <td><?= $s['tiebreaker_value']!==null ? h((string)$s['tiebreaker_value']) : '-' ?></td>
-          <td><?= $s['tb_diff']!==999999999 ? h((string)$s['tb_diff']) : '-' ?></td>
-          <td class="small"><?= h($s['created_at']) ?></td>
-        </tr>
+    <ol class="plist">
+      <?php foreach ($subs as $s): ?>
+        <li>
+          <strong><?= h($s['participant_name']) ?></strong> – <?= (int)$s['score'] ?> p
+          <div class="meta">
+            Utslagssvar: <?= $s['tiebreaker_value']!==null ? h((string)$s['tiebreaker_value']) : '-' ?>
+            • Diff: <?= $s['tb_diff']!==999999999 ? h((string)$s['tb_diff']) : '-' ?>
+            • Tid: <?= h($s['created_at']) ?>
+          </div>
+        </li>
       <?php endforeach; ?>
-    </table>
+    </ol>
   <?php endif; ?>
 </body>
 </html>
-

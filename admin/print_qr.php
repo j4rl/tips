@@ -25,8 +25,17 @@ $playUrl = $baseHost . base_url('/play.php') . '?code=' . $quiz['join_code'];
     .wrap{display:flex;flex-direction:column;align-items:center;gap:1rem}
     #qrcode{width:14cm;max-width:100%;}
     .title{font-size:28pt;text-align:center}
+    .desc{font-size:12pt;color:#333;text-align:center;max-width:18cm;}
     .url{font-size:12pt;color:#444;text-align:center;word-break:break-all}
-    @media print { .noprint{display:none} }
+    @media print {
+      .noprint{display:none}
+      body{margin:1.2cm}
+      .title{font-size:26pt}
+      .desc{font-size:11pt;color:#000}
+      .url{font-size:10pt;color:#000}
+      /* Ensure the QR renders large and crisp when printed */
+      #qrcode img, #qrcode canvas { width: 15cm !important; height: 15cm !important; }
+    }
   </style>
 </head>
 <body>
@@ -36,6 +45,9 @@ $playUrl = $baseHost . base_url('/play.php') . '?code=' . $quiz['join_code'];
   </div>
   <div class="wrap">
     <div class="title"><?=h($quiz['title'])?></div>
+    <?php if (!empty($quiz['description'])): ?>
+      <div class="desc"><?= nl2br(h($quiz['description'])) ?></div>
+    <?php endif; ?>
     <div id="qrcode" aria-label="QR till spel"></div>
     <div class="url"><?=h($playUrl)?></div>
   </div>

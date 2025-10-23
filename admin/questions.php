@@ -38,37 +38,35 @@ $questions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   <?php if (!$questions): ?>
     <p>Inga frågor ännu. Lägg till minst en, och avsluta med en utslagsfråga.</p>
   <?php else: ?>
-  <table id="qlist">
-    <tr><th>Ordning</th><th>Typ</th><th>Fråga</th><th>Bild</th><th>Åtgärder</th></tr>
+  <div class="list-head">
+    <div>Ordning</div><div>Typ</div><div>Fråga</div><div>Bild</div><div>Åtgärder</div>
+  </div>
+  <div id="qlist" class="list">
     <?php foreach ($questions as $q): ?>
-      <tr draggable="true" data-id="<?= (int)$q['id'] ?>">
-        <td class="ord">
-          <?= (int)$q['q_order'] ?>
-          <span class="drag-handle" title="Dra för att ändra" aria-label="Flytta" role="button">⋮⋮</span>
-        </td>
-        <td><?= $q['type']==='mcq'?'Flervalsfråga':'Utslagsfråga' ?></td>
-        <td><?= nl2br(h($q['text'])) ?></td>
-        <td><?php if ($q['image_path']): ?><img class="img" src="<?=h(base_url('/'.ltrim($q['image_path'],'/')))?>"><?php endif; ?></td>
-        <td>
+      <div class="list-item" draggable="true" data-id="<?= (int)$q['id'] ?>">
+        <div class="list-col ord"><span class="ordnum"><?= (int)$q['q_order'] ?></span> <span class="drag-handle" title="Dra för att ändra" aria-label="Flytta" role="button">⋮⋮</span></div>
+        <div class="list-col type"><?= $q['type']==='mcq'?'Flervalsfråga':'Utslagsfråga' ?></div>
+        <div class="list-col text"><?= nl2br(h($q['text'])) ?></div>
+        <div class="list-col img"><?php if ($q['image_path']): ?><img class="img" src="<?=h(base_url('/'.ltrim($q['image_path'],'/')))?>"><?php endif; ?></div>
+        <div class="list-col actions">
           <a class="btn" href="<?=h(base_url('/admin/question_form.php?id='.$q['id'].'&quiz_id='.$quiz['id']))?>">Redigera</a>
           <a class="btn" href="<?=h(base_url('/admin/question_form.php?delete=1&id='.$q['id'].'&quiz_id='.$quiz['id']))?>" onclick="return confirm('Radera frågan?');">Radera</a>
-        </td>
-      </tr>
+        </div>
+      </div>
     <?php endforeach; ?>
-  </table>
+  </div>
   <div id="saveMsg" class="small" style="margin-top:.5rem;color:#555;"></div>
   <script>
   (function(){
-    var table = document.getElementById('qlist');
-    if (!table) return;
+    var list = document.getElementById('qlist');
+    if (!list) return;
     var dragging;
-    var rows = Array.from(table.querySelectorAll('tr')).slice(1);
+    var rows = Array.from(list.querySelectorAll('.list-item'));
 
-    function refreshRows(){ rows = Array.from(table.querySelectorAll('tr')).slice(1); }
+    function refreshRows(){ rows = Array.from(list.querySelectorAll('.list-item')); }
     function indexOfRow(row){ return rows.indexOf(row); }
 
     function handleDragStart(e){
-      // Only start dragging when starting from the handle
       if (!e.target || !e.target.closest('.drag-handle')) { e.preventDefault(); return false; }
       dragging = this; e.dataTransfer.effectAllowed = 'move'; this.style.opacity = '0.4';
     }
@@ -81,7 +79,7 @@ $questions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
       if (from < to) { this.after(dragging); } else { this.before(dragging); }
       refreshRows();
       // Update visible order numbers
-      rows.forEach(function(r, i){ var c=r.querySelector('.ord'); if(c){ c.firstChild.nodeValue = (i+1)+' '; } });
+      rows.forEach(function(r, i){ var c=r.querySelector('.ordnum'); if(c){ c.textContent = (i+1); } });
       // Send to server
       var ids = rows.map(function(r){ return r.getAttribute('data-id'); });
       var msg = document.getElementById('saveMsg');
@@ -106,3 +104,4 @@ $questions = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   <?php endif; ?>
 </body>
 </html>
+

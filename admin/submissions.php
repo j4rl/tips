@@ -46,20 +46,23 @@ usort($subs, function($a,$b){
   <?php if (!$subs): ?>
     <p>Inga inlämningar ännu.</p>
   <?php else: ?>
-    <table>
-      <tr><th>Plac.</th><th>Namn</th><th>Kontakt</th><th>Poäng</th><th>Utslagssvar</th><th>Diff</th><th>Tid</th></tr>
+    <div class="list">
       <?php $i=1; foreach ($subs as $s): ?>
-        <tr>
-          <td><?= $i++ ?></td>
-          <td><?= h($s['participant_name']) ?></td>
-          <td class="small"><?= h((string)$s['contact_info']) ?></td>
-          <td><?= (int)$s['score'] ?></td>
-          <td><?= $s['tiebreaker_value']!==null ? h((string)$s['tiebreaker_value']) : '-' ?></td>
-          <td><?= $s['tb_diff']!==999999999 ? h((string)$s['tb_diff']) : '-' ?></td>
-          <td class="small"><?= h($s['created_at']) ?></td>
-        </tr>
+        <div class="result-item">
+          <div class="result-rank">#<?= $i++ ?></div>
+          <div>
+            <div><strong><?= h($s['participant_name']) ?></strong> – <?= (int)$s['score'] ?> p</div>
+            <div class="result-meta">
+              Utslagssvar: <?= $s['tiebreaker_value']!==null ? h((string)$s['tiebreaker_value']) : '-' ?>
+              • Diff: <?= $s['tb_diff']!==999999999 ? h((string)$s['tb_diff']) : '-' ?>
+              • Tid: <?= h($s['created_at']) ?>
+              <?php if (!empty($s['contact_info'])): ?> • Kontakt: <?= h((string)$s['contact_info']) ?><?php endif; ?>
+            </div>
+          </div>
+        </div>
       <?php endforeach; ?>
-    </table>
+    </div>
   <?php endif; ?>
 </body>
 </html>
+
