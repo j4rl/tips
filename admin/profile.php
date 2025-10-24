@@ -49,9 +49,11 @@ $bank = $mysqli->query('SELECT id,text,type,image_path,created_at FROM bank_ques
       <a class="btn" href="<?=h(base_url('/admin/profile.php'))?>"><?="✦ ".h($user['name'])?></a>
     </div>
   </header>
+  <nav><a class="btn" href="<?=h(base_url('/admin/index.php'))?>">Tillbaka</a></nav>
   <?php if ($msg): ?><div class="badge badge-success"><?=h($msg)?></div><?php endif; ?>
   <?php if ($error): ?><div class="err" style="color:var(--color-error)"><?=h($error)?></div><?php endif; ?>
   <form method="post" class="stack">
+    <h2>Inställningar</h2>
     <label>Tema
       <select name="theme_mode">
         <option value="system" <?= $prefs['theme_mode']==='system'?'selected':'' ?>>System</option>
@@ -59,21 +61,24 @@ $bank = $mysqli->query('SELECT id,text,type,image_path,created_at FROM bank_ques
         <option value="dark" <?= $prefs['theme_mode']==='dark'?'selected':'' ?>>Mörkt</option>
       </select>
     </label>
+    <fieldset>
+    <legend>Färginställningar</legend>
     <div class="row">
-      <label>Huvudfärg (ljust läge)
+      <label>Huvudfärg<br>(ljust läge)
         <input type="color" name="main_color_light" value="<?=h($prefs['main_color_light'])?>">
       </label>
-      <label>Huvudfärg (mörkt läge)
+      <label>Huvudfärg<br>(mörkt läge)
         <input type="color" name="main_color_dark" value="<?=h($prefs['main_color_dark'])?>">
       </label>
     </div>
+    </fieldset>
     <div>
       <button type="submit" class="btn-accent">Spara</button>
-      <a class="btn" href="<?=h(base_url('/admin/index.php'))?>">Tillbaka</a>
+      
     </div>
   </form>
 
-  <hr>
+
   <h2>Mina frågor</h2>
   <p><a class="btn btn-accent" href="<?=h(base_url('/admin/bank_question_form.php'))?>">+ Ny bankfråga</a></p>
 

@@ -48,12 +48,13 @@ usort($subs, function($a,$b){
       <a class="btn" href="<?=h(base_url('/admin/profile.php'))?>"><?="✦ ".h($user['name'])?></a>
     </div>
   </header>
+  <nav>
+    <a href="<?=h(base_url('/admin/index.php'))?>" class="btn">Tillbaka</a>
+    <a href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz['id']))?>" class="btn">Frågor</a>
+    <a href="<?=h(base_url('/admin/print_results.php?quiz_id='.$quiz['id']))?>" class="btn">Utskrift (resultat)</a>
+  </nav>
   <h1>Resultat – <?=h($quiz['title'])?></h1>
-  <p>
-    <a href="<?=h(base_url('/admin/index.php'))?>">Översikt</a> |
-    <a href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz['id']))?>">Frågor</a> |
-    <a href="<?=h(base_url('/admin/print_results.php?quiz_id='.$quiz['id']))?>">Utskrift (resultat)</a>
-  </p>
+
 
   <?php if (!$subs): ?>
     <p>Inga inlämningar ännu.</p>

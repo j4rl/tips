@@ -70,6 +70,7 @@ if (is_post()) {
       <a class="btn" href="<?=h(base_url('/admin/profile.php'))?>"><?="✦ ".h($user['name'])?></a>
     </div>
   </header>
+  <nav><a href="<?=h(base_url('/admin/index.php'))?>" class="btn">Tillbaka</a></nav>
   <div class="spancol">
   <h1><?= $id? 'Redigera' : 'Ny' ?> tipspromenad</h1>
   <?php if ($id): ?>
@@ -93,7 +94,7 @@ if (is_post()) {
       <label style="flex:0 0 auto"><input type="checkbox" name="is_active" <?= $is_active? 'checked':'' ?>> Aktiv</label>
     </div>
     <button type="submit" class="btn-accent">Spara</button>
-    <a href="<?=h(base_url('/admin/index.php'))?>" class="btn">Tillbaka</a>
+    
   </form>
 
 </body>

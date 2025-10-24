@@ -169,6 +169,7 @@ if (is_post()) {
       <a class="btn" href="<?=h(base_url('/admin/profile.php'))?>"><?="✦ ".h($user['name'])?></a>
     </div>
   </header>
+  <nav><a href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz_id))?>">Tillbaka</a></nav>
   <h1><?= $id? 'Redigera' : 'Ny' ?> fråga</h1>
   <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
   <form method="post" enctype="multipart/form-data">
@@ -210,7 +211,7 @@ if (is_post()) {
     </fieldset>
 
     <button type="submit" class="btn-accent">Spara</button>
-    <a href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz_id))?>">Tillbaka</a>
+    
   </form>
 
   <script>

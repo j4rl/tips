@@ -4,12 +4,13 @@
   color-scheme: light dark;
 
   /* Base and text */
-  --color-bg: light-dark(#ffffff, #0f1115);
+  --color-bg: light-dark(#eeeeee, #0f1115);
   --color-bg-alt: light-dark(#f3f4f6, #111827);
   --color-text: light-dark(#111111, #f3f4f6);
   --color-muted: light-dark(#666666, #9aa3ad);
   --color-muted-2: light-dark(#555555, #8b94a1);
   --color-url: light-dark(#444444, #c9d1d9);
+  --color-nav-bg: light-dark(#0002, #fff1);
 
   /* Borders and outlines */
   --color-border: light-dark(#dddddd, #2d3748);
@@ -23,7 +24,7 @@
   --color-listhead-text: light-dark(#333333, #d1d5db);
   --color-white: light-dark(#ffffff, #0f1115);
   /* Default accent (can be overridden per-user inline) */
-  --accent: light-dark(#0d6efd, #0d6efd);
+  --accent: light-dark(#86559d, #513050);
 
   /* Status */
   --color-success: light-dark(#0a7a29, #34d399);
@@ -73,6 +74,12 @@ body {
 .spancol label *{
   width:100%;
 }
+.stack{
+  width:100%;
+  display:flex;
+  flex-direction: column;
+  gap:.5rem;
+}
 
 /* Images */
 .qimg { max-width: 100%; border-radius: 8px; margin: .5rem 0; }
@@ -101,21 +108,45 @@ a.btn, a.back { text-decoration: none; }
 }
 
 /* Accent button */
-.btn-accent { background: var(--accent); color: var(--color-white); border-color: var(--accent); text-decoration: none; }
-.btn-accent:hover { filter: brightness(0.95); }
+.btn-accent { 
+  background: var(--accent); 
+  color: var(--color-white); 
+  border-color: var(--accent); 
+  text-decoration: none; 
+}
+.btn-accent:hover { 
+  filter: brightness(0.95);
+  color:var(--accent); 
+}
 .btn-accent:active { filter: brightness(0.9); }
 
 a { color: var(--accent); }
-a:hover { text-decoration: underline; }
+a:hover { text-decoration: none; }
 *:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 input:focus, textarea:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15); }
 input[type=checkbox], input[type=radio], progress { accent-color: var(--accent); }
 
 
 /* Navigation blocks */
-.nav { display: flex; justify-content: space-between; gap: .6rem; margin-top: 1rem; }
+nav { display: flex; 
+  justify-content: ; 
+  gap: .6rem; 
+  margin-bottom: 1rem; 
+  background: var(--color-nav-bg);
+  border-radius: 0 0 10px 10px;
+  padding: .5rem 1rem;}
+
 
 /* Form controls */
+form { 
+  margin: 1rem 0 3rem 0;
+  padding: 1rem;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--color-border-strong);
+  border-radius: 8px;
+  width: 100%;
+  }
+
 input[type=text], input[type=number], input[type=email], input[type=password], textarea, select {
   width: 100%;
   padding: .7rem;
@@ -130,7 +161,12 @@ input[type=color]{
   margin:.3rem .5rem 0 0;
   box-sizing: border-box;
 }
-label { display: block; }
+label { display: flex; 
+  margin-bottom: 0.5rem;
+  gap:1rem;
+  align-items: center;}
+fieldset { border: 1px solid var(--color-border-strong); border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+legend { font-weight: bold; padding: 0 .5rem; }
 
 /* Options list (play) */
 .opt { display: block; border: 1px solid var(--color-border-strong); border-radius: 8px; padding: .7rem; margin: .5rem 0; }
@@ -155,10 +191,16 @@ code { background: var(--color-code-bg); padding: .15rem .3rem; border-radius: 4
 /* Page header */
 .page-header { display:flex; justify-content:space-between; align-items:center; gap:.5rem; flex-wrap:wrap; }
 .site-header {
-  display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap;
-  padding: .75rem 1rem; border-radius: 10px; margin-bottom: 1rem;
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  gap:1rem; 
+  flex-wrap:wrap;
+  padding: .75rem 1rem; 
+  border-radius: 10px 10px 0 0; 
   background: var(--accent, var(--color-bg-alt));
   color: var(--color-white);
+  font:bold 1.2rem system-ui, Segoe UI, Roboto, Arial, sans-serif;
 }
 .site-header a { color: var(--color-white); }
 .site-header .btn { border-color: rgba(255,255,255,.6); color: var(--color-white); }

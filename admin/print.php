@@ -50,10 +50,14 @@ function options_for($qid){
   </style>
 </head>
 <body>
-  <div class="noprint">
+  <header class="site-header noprint">
+    <h1 style="margin:0">Utskrift</h1>
+  </header>
+
+  <nav class="noprint">
     <a href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz['id']))?>" class="back">Tillbaka</a>
     <button onclick="window.print()">Skriv ut</button>
-  </div>
+  </nav>
   <h1><?=h($quiz['title'])?></h1>
   <?php foreach ($questions as $q): ?>
     <div class="q">
