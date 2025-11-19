@@ -104,12 +104,12 @@ if (is_post()) {
   <div class="container">
     <h2>Slutför din inlämning</h2>
     <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
-    <form method="post">
+    <form method="post" class="form-shell form-shell--narrow">
       <input type="hidden" name="code" value="<?=h($code)?>">
       <label>Namn
         <input name="name" required>
       </label>
-      <label>Kontaktuppgifter (telefon / e‑post)
+      <label>Kontaktuppgifter (telefon / e-post)
         <input name="contact">
       </label>
       <button class="btn" type="submit">Lämna in</button>

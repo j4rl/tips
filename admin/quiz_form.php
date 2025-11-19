@@ -80,7 +80,7 @@ if (is_post()) {
   </form>
   <?php endif; ?></div>
   <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
-  <form method="post">
+  <form method="post" class="form-shell">
     <label>Titel
       <input type="text" name="title" value="<?=h($title)?>" required>
     </label>
@@ -88,12 +88,14 @@ if (is_post()) {
       <textarea name="description" rows="4"><?=h($description)?></textarea>
     </label>
     <div class="row">
-      <label>Join‑kod (för QR/URL)
+      <label>Join-kod (för QR/URL)
         <input type="text" name="join_code" value="<?=h($join_code?:rand_code(6))?>" maxlength="32" required>
       </label>
-      <label style="flex:0 0 auto"><input type="checkbox" name="is_active" <?= $is_active? 'checked':'' ?>> Aktiv</label>
+      <label class="form-choice" style="flex:0 0 auto"><input type="checkbox" name="is_active" <?= $is_active? 'checked':'' ?>> Aktiv</label>
     </div>
-    <button type="submit" class="btn-accent">Spara</button>
+    <div class="actions">
+      <button type="submit" class="btn-accent">Spara</button>
+    </div>
     
   </form>
 

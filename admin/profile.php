@@ -51,8 +51,8 @@ $bank = $mysqli->query('SELECT id,text,type,image_path,created_at FROM bank_ques
   </header>
   <nav><a class="btn" href="<?=h(base_url('/admin/index.php'))?>">Tillbaka</a></nav>
   <?php if ($msg): ?><div class="badge badge-success"><?=h($msg)?></div><?php endif; ?>
-  <?php if ($error): ?><div class="err" style="color:var(--color-error)"><?=h($error)?></div><?php endif; ?>
-  <form method="post" class="stack">
+  <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
+  <form method="post" class="stack form-shell">
     <h2>Inställningar</h2>
     <label>Tema
       <select name="theme_mode">
@@ -72,7 +72,7 @@ $bank = $mysqli->query('SELECT id,text,type,image_path,created_at FROM bank_ques
       </label>
     </div>
     </fieldset>
-    <div>
+    <div class="actions">
       <button type="submit" class="btn-accent">Spara</button>
       
     </div>
@@ -108,4 +108,3 @@ $bank = $mysqli->query('SELECT id,text,type,image_path,created_at FROM bank_ques
   <?php endif; ?>
 </body>
 </html>
-

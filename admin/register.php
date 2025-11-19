@@ -38,7 +38,7 @@ if (is_post()) {
 <body>
   <h1>Registrera</h1>
   <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
-  <form method="post">
+  <form method="post" class="form-shell form-shell--narrow">
     <label>Namn
       <input name="name" required>
     </label>

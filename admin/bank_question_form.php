@@ -131,12 +131,12 @@ if (is_post()) {
     </div>
   </header>
   <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
-  <form method="post" enctype="multipart/form-data" class="card" style="max-width:900px;margin:auto;">
-    <div class="row">
-      <div>
-        <label>Typ</label>
-        <label><input type="radio" name="type" value="mcq" <?= $type==='mcq'?'checked':'' ?>> Flervalsfråga</label>
-        <label><input type="radio" name="type" value="tiebreaker" <?= $type==='tiebreaker'?'checked':'' ?>> Utslagsfråga</label>
+  <form method="post" enctype="multipart/form-data" class="form-shell">
+    <div>
+      <p class="small muted" style="font-weight:600;">Frågetyp</p>
+      <div class="row">
+        <label class="form-choice"><input type="radio" name="type" value="mcq" <?= $type==='mcq'?'checked':'' ?>> Flervalsfråga</label>
+        <label class="form-choice"><input type="radio" name="type" value="tiebreaker" <?= $type==='tiebreaker'?'checked':'' ?>> Utslagsfråga</label>
       </div>
     </div>
 
@@ -144,18 +144,25 @@ if (is_post()) {
       <textarea name="text" rows="4" required><?=h($text)?></textarea>
     </label>
     <label>Bild (valfri)
-      <input type="file" name="image" accept="image/*">
-      <?php if ($image_path): ?><div>Nuvarande: <a href="<?=h(base_url('/'.ltrim($image_path,'/')))?>" target="_blank">Visa bild</a></div><?php endif; ?>
+      <div class="file-upload">
+        <input type="file" name="image" accept="image/*">
+        <span class="file-upload__icon" aria-hidden="true">+</span>
+        <div>
+          <div class="file-upload__title">Välj eller släpp en bildfil</div>
+          <div class="file-upload__hint">PNG, JPG, GIF, WEBP</div>
+        </div>
+      </div>
     </label>
+    <?php if ($image_path): ?><div class="small">Nuvarande: <a href="<?=h(base_url('/'.ltrim($image_path,'/')))?>" target="_blank">Visa bild</a></div><?php endif; ?>
 
     <fieldset id="mcq" <?= $type==='mcq'? '' : 'style="display:none"' ?>>
       <legend>Flervalsalternativ (2–4)</legend>
       <?php for ($i=1;$i<=4;$i++): ?>
-        <div>
+        <div class="spancol">
           <label>Alternativ <?= $i ?>
             <input type="text" name="opt<?= $i ?>" value="<?=h($opts[$i-1] ?? '')?>">
           </label>
-          <label><input type="radio" name="correct_option" value="<?= $i ?>" <?= ((int)$correct_option === $i)?'checked':'' ?>> Korrekt</label>
+          <label class="form-choice"><input type="radio" name="correct_option" value="<?= $i ?>" <?= ((int)$correct_option === $i)?'checked':'' ?>> Korrekt</label>
         </div>
       <?php endfor; ?>
     </fieldset>
@@ -167,9 +174,10 @@ if (is_post()) {
       </label>
     </fieldset>
 
-    <button type="submit" class="btn-accent">Spara</button>
-    <a class="btn" href="<?=h(base_url('/admin/profile.php'))?>">Tillbaka</a>
+    <div class="actions">
+      <button type="submit" class="btn-accent">Spara</button>
+      <a class="btn" href="<?=h(base_url('/admin/profile.php'))?>">Tillbaka</a>
+    </div>
   </form>
 </body>
 </html>
-

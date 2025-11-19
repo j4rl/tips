@@ -41,8 +41,8 @@ if (is_post()) {
 <body>
   <h1>Logga in</h1>
   <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
-  <form method="post">
-    <label>E‑post
+  <form method="post" class="form-shell form-shell--narrow">
+    <label>E-post
       <input type="email" name="email" required>
     </label>
     <label>Lösenord

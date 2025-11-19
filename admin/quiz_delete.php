@@ -47,14 +47,15 @@ if (is_post()) {
   <h1>Radera tipspromenad</h1>
   <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
   <p>Vill du spara frågorna i din frågebank innan radering?</p>
-  <form method="post">
+  <form method="post" class="form-shell form-shell--narrow">
     <input type="hidden" name="id" value="<?= (int)$id ?>">
     <div class="row" style="align-items:flex-start">
       <button class="btn" type="submit" name="mode" value="delete_all" style="border-color:#c00;color:#c00">Radera utan att spara</button>
       <button class="btn" type="submit" name="mode" value="save_bank">Spara i frågebank och radera</button>
     </div>
-    <p><a class="btn" href="<?=h(base_url('/admin/quiz_form.php?id='.$id))?>">Avbryt</a></p>
+    <div class="actions">
+      <a class="btn" href="<?=h(base_url('/admin/quiz_form.php?id='.$id))?>">Avbryt</a>
+    </div>
   </form>
 </body>
 </html>
-

@@ -71,6 +71,7 @@ $state['idx'] = $reqIndex;
 
 $idx = $state['idx'];
 $q = $rows[$idx];
+$currentAnswer = $state['answers'][(int)$q['id']] ?? [];
 
 // Hämta alternativ för mcq
 $options = [];
@@ -90,14 +91,16 @@ if ($q['type']==='mcq') {
 </head>
 <body>
   <div class="container">
-    <div class="muted">Fråga <?= ($idx+1) ?> av <?= count($rows) ?></div>
-    <h2><?= nl2br(h($q['text'])) ?></h2>
+    <div class="question-meta">
+      <div class="question-number">Fråga <?= ($idx+1) ?></div>
+      <div class="question-note">Läs själva frågan på platsen. Välj rätt svarsalternativ här i appen.</div>
+    </div>
     <?php if ($q['image_path']): ?><img class="qimg" src="<?=h(base_url('/'.ltrim($q['image_path'],'/')))?>"><?php endif; ?>
 
-    <form method="post" class="card">
+    <form method="post" class="form-shell">
       <input type="hidden" name="question_id" value="<?= (int)$q['id'] ?>">
       <?php if ($q['type']==='mcq'): ?>
-        <?php $sel = $state['answers'][(int)$q['id']]['option_id'] ?? null; ?>
+        <?php $sel = $currentAnswer['option_id'] ?? null; ?>
         <?php foreach ($options as $op): ?>
         <label class="opt">
           <input type="radio" name="option_id" value="<?= (int)$op['id'] ?>" <?= ($sel==(int)$op['id'])?'checked':'' ?> required> <?=h($op['text'])?>
@@ -114,7 +117,7 @@ if ($q['type']==='mcq') {
           <?php endif; ?>
         </div>
       <?php else: ?>
-        <?php $tbs = $state['answers'][(int)$q['id']]['tb'] ?? ''; ?>
+        <?php $tbs = $currentAnswer['tb'] ?? ''; ?>
         <label>Utslagsfråga – ange ett numeriskt svar
           <input type="number" step="any" name="tiebreaker_value" value="<?=h((string)$tbs)?>" required>
         </label>
@@ -133,4 +136,3 @@ if ($q['type']==='mcq') {
   </div>
 </body>
 </html>
-

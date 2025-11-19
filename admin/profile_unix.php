@@ -58,8 +58,8 @@ $bank = $mysqli->query('SELECT id,text,type,created_at FROM bank_questions WHERE
   </div>
 </header>
   <?php if ($msg): ?><div class="badge badge-success"><?=h($msg)?></div><?php endif; ?>
-  <?php if ($error): ?><div class="err" style="color:var(--color-error)"><?=h($error)?></div><?php endif; ?>
-  <form method="post" class="stack">
+  <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
+  <form method="post" class="stack form-shell">
     <label>Tema
       <select name="theme_mode">
         <option value="system" <?= $prefs['theme_mode']==='system'?'selected':'' ?>>System</option>
@@ -75,7 +75,7 @@ $bank = $mysqli->query('SELECT id,text,type,created_at FROM bank_questions WHERE
       <input type="color" name="main_color_dark" value="<?=h($prefs['main_color_dark'])?>">
     </label>
   </div>
-    <div>
+    <div class="actions">
       <button type="submit" class="btn-accent">Spara</button>
       <a class="btn" href="<?=h(base_url('/admin/index.php'))?>">Tillbaka</a>
     </div>

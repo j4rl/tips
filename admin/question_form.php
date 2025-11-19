@@ -172,14 +172,14 @@ if (is_post()) {
   <nav><a href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz_id))?>">Tillbaka</a></nav>
   <h1><?= $id? 'Redigera' : 'Ny' ?> fråga</h1>
   <?php if ($error): ?><div class="err"><?=h($error)?></div><?php endif; ?>
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" class="form-shell">
     <input type="hidden" name="quiz_id" value="<?= (int)$quiz_id ?>">
     <p><a class="btn" href="<?=h(base_url('/admin/questions.php?quiz_id='.$quiz_id.'&bank=1'))?>">Lägg till från frågebank</a></p>
-    <div class="row">
-      <div>
-        <label>Typ</label>
-        <label><input type="radio" name="type" value="mcq" <?= $type==='mcq'?'checked':'' ?>> Flervalsfråga</label>
-        <label><input type="radio" name="type" value="tiebreaker" <?= $type==='tiebreaker'?'checked':'' ?>> Utslagsfråga</label>
+    <div>
+      <p class="small muted" style="font-weight:600;">Frågetyp</p>
+      <div class="row">
+        <label class="form-choice"><input type="radio" name="type" value="mcq" <?= $type==='mcq'?'checked':'' ?>> Flervalsfråga</label>
+        <label class="form-choice"><input type="radio" name="type" value="tiebreaker" <?= $type==='tiebreaker'?'checked':'' ?>> Utslagsfråga</label>
       </div>
     </div>
 
@@ -187,9 +187,16 @@ if (is_post()) {
       <textarea name="text" rows="4" required><?=h($text)?></textarea>
     </label>
     <label>Bild (valfri)
-      <input type="file" name="image" accept="image/*">
-      <?php if ($image_path): ?><div>Nuvarande: <a href="<?=h(base_url('/'.ltrim($image_path,'/')))?>" target="_blank">Visa bild</a></div><?php endif; ?>
+      <div class="file-upload">
+        <input type="file" name="image" accept="image/*">
+        <span class="file-upload__icon" aria-hidden="true">+</span>
+        <div>
+          <div class="file-upload__title">Välj eller släpp en bildfil</div>
+          <div class="file-upload__hint">PNG, JPG, GIF, WEBP</div>
+        </div>
+      </div>
     </label>
+    <?php if ($image_path): ?><div class="small">Nuvarande: <a href="<?=h(base_url('/'.ltrim($image_path,'/')))?>" target="_blank">Visa bild</a></div><?php endif; ?>
 
     <fieldset id="mcq" <?= $type==='mcq'? '' : 'style="display:none"' ?>>
       <legend>Flervalsalternativ (2–4)</legend>
@@ -198,7 +205,7 @@ if (is_post()) {
           <label>Alternativ <?= $i ?>
             <input type="text" name="opt<?= $i ?>" value="<?=h($opts[$i-1] ?? '')?>">
           </label>
-          <label><input type="radio" name="correct_option" value="<?= $i ?>" <?= ((int)$correct_option === $i)?'checked':'' ?>> Korrekt</label>
+          <label class="form-choice"><input type="radio" name="correct_option" value="<?= $i ?>" <?= ((int)$correct_option === $i)?'checked':'' ?>> Korrekt</label>
         </div>
       <?php endfor; ?>
     </fieldset>
@@ -210,7 +217,9 @@ if (is_post()) {
       </label>
     </fieldset>
 
-    <button type="submit" class="btn-accent">Spara</button>
+    <div class="actions">
+      <button type="submit" class="btn-accent">Spara</button>
+    </div>
     
   </form>
 
